@@ -54,10 +54,6 @@ describe('Automation Exercise', () => {
     });
 
 
-    // ========================================
-    // TC02 – Login com o usuário criado no TC01
-    // ========================================
-
     it('TC02: Login de Usuario', () => {
 
         cy.visit('https://automationexercise.com/');
@@ -72,9 +68,6 @@ describe('Automation Exercise', () => {
     });
 
 
-    // ===============================
-    // TC03 – Login com conta inválida
-    // ===============================
 
     it('TC03: Testar com conta inexistente', () => {
 
@@ -91,10 +84,6 @@ describe('Automation Exercise', () => {
         cy.contains('Your email or password is incorrect!').should('be.visible');
     });
 
-
-    // ===================
-    // TC04 – Logout
-    // ===================
 
     it('TC04 : Logout de Usuario', () => {
 
@@ -114,10 +103,6 @@ describe('Automation Exercise', () => {
     });
 
     
-    // ========================================
-    // TC05 – Testar registro com e-mail existente
-    // ========================================
-
     it('TC05 : Registrar com e-mail já existente', () => {
 
         cy.visit('https://automationexercise.com/');
@@ -157,5 +142,118 @@ describe('Automation Exercise', () => {
         cy.get('a.btn.btn-success').click();
         cy.url().should('eq', 'https://automationexercise.com/');
     });
+
+    it('TC08 : verificar produtos na página de produtos', () => {
+  
+    cy.visit('https://automationexercise.com/');
+
+    
+    cy.get('body').should('be.visible');
+
+    
+    cy.get('a[href="/products"]').click();
+
+    cy.contains('All Products', { timeout: 10000 }).should('be.visible');
+    cy.url().should('include', '/products');
+
+    
+    cy.get('.features_items .product-image-wrapper')
+        .should('be.visible')
+        .and('have.length.greaterThan', 0);
+
+
+    cy.get('.features_items .product-image-wrapper')
+        .first()
+        .find('a[href^="/product_details/"]')
+        .click();
+
+    
+    cy.url().should('include', '/product_details/');
+
+   
+
+    // Nome do produto
+    cy.get('.product-information h2')
+        .should('be.visible')
+        .and('not.be.empty');
+
+    // Categoria
+    cy.get('.product-information p')
+        .contains('Category')
+        .should('be.visible');
+
+    // Preço
+    cy.get('.product-information span span')
+        .first()
+        .should('be.visible')
+        .and('contain', 'Rs.');
+
+    // Availability
+    cy.get('.product-information p')
+        .contains('Availability')
+        .should('be.visible');
+
+    // Condition
+    cy.get('.product-information p')
+        .contains('Condition')
+        .should('be.visible');
+
+    // Brand
+    cy.get('.product-information p')
+        .contains('Brand')
+        .should('be.visible');
+
+
+    });
+
+    it('TC9: Buscar produtos e validar resultados', () => {
+
+    cy.visit('https://automationexercise.com/');
+
+    cy.get('body').should('be.visible');
+
+    
+    cy.get('a[href="/products"]').click();
+
+    
+    cy.contains('All Products', { timeout: 10000 }).should('be.visible');
+    cy.url().should('include', '/products');
+
+  
+    const searchTerm = "dress";
+    cy.get('#search_product').type(searchTerm);
+    cy.get('#submit_search').click();
+
+   
+    cy.contains('Searched Products', { timeout: 10000 }).should('be.visible');
+
+    cy.get('.features_items .product-image-wrapper')
+        .should('be.visible')
+        .and('have.length.greaterThan', 0);  
+    });
+
+    it('TC10: Verificar inscrição no footer (Subscription)', () => {
+
+    cy.visit('https://automationexercise.com/');
+
+   
+    cy.get('body').should('be.visible');
+
+    
+    cy.scrollTo('bottom');
+
+    
+    cy.contains('Subscription', { timeout: 10000 }).should('be.visible');
+
+    //Inserir email e clicar na seta
+    const email = `teste${Date.now()}@gmail.com`;   // evita conflito de e-mails
+    cy.get('#susbscribe_email').type(email);
+    cy.get('#subscribe').click();
+
+    //Verificar mensagem de sucesso
+    cy.contains('You have been successfully subscribed!')
+      .should('be.visible');
+    });
+
 
 });
