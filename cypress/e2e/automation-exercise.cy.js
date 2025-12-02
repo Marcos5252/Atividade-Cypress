@@ -76,7 +76,7 @@ describe('Automation Exercise', () => {
 
         cy.contains('Login to your account').should('be.visible');
 
-        cy.get('input[data-qa="login-email"]').type('inexistente'+ faker.number.int() +'@gmail.com');
+        cy.get('input[data-qa="login-email"]').type('inexistente' + faker.number.int() + '@gmail.com');
         cy.get('input[data-qa="login-password"]').type('senhaerrada');
 
         cy.get('button[data-qa="login-button"]').click();
@@ -102,7 +102,7 @@ describe('Automation Exercise', () => {
         cy.contains('Login to your account').should('be.visible');
     });
 
-    
+
     it('TC05 : Registrar com e-mail já existente', () => {
 
         cy.visit('https://automationexercise.com/');
@@ -144,116 +144,231 @@ describe('Automation Exercise', () => {
     });
 
     it('TC08 : verificar produtos na página de produtos', () => {
-  
-    cy.visit('https://automationexercise.com/');
 
-    
-    cy.get('body').should('be.visible');
-
-    
-    cy.get('a[href="/products"]').click();
-
-    cy.contains('All Products', { timeout: 10000 }).should('be.visible');
-    cy.url().should('include', '/products');
-
-    
-    cy.get('.features_items .product-image-wrapper')
-        .should('be.visible')
-        .and('have.length.greaterThan', 0);
+        cy.visit('https://automationexercise.com/');
 
 
-    cy.get('.features_items .product-image-wrapper')
-        .first()
-        .find('a[href^="/product_details/"]')
-        .click();
+        cy.get('body').should('be.visible');
 
-    
-    cy.url().should('include', '/product_details/');
 
-   
+        cy.get('a[href="/products"]').click();
 
-    // Nome do produto
-    cy.get('.product-information h2')
-        .should('be.visible')
-        .and('not.be.empty');
+        cy.contains('All Products', { timeout: 10000 }).should('be.visible');
+        cy.url().should('include', '/products');
 
-    // Categoria
-    cy.get('.product-information p')
-        .contains('Category')
-        .should('be.visible');
 
-    // Preço
-    cy.get('.product-information span span')
-        .first()
-        .should('be.visible')
-        .and('contain', 'Rs.');
+        cy.get('.features_items .product-image-wrapper')
+            .should('be.visible')
+            .and('have.length.greaterThan', 0);
 
-    // Availability
-    cy.get('.product-information p')
-        .contains('Availability')
-        .should('be.visible');
 
-    // Condition
-    cy.get('.product-information p')
-        .contains('Condition')
-        .should('be.visible');
+        cy.get('.features_items .product-image-wrapper')
+            .first()
+            .find('a[href^="/product_details/"]')
+            .click();
 
-    // Brand
-    cy.get('.product-information p')
-        .contains('Brand')
-        .should('be.visible');
+
+        cy.url().should('include', '/product_details/');
+
+
+
+        // Nome do produto
+        cy.get('.product-information h2')
+            .should('be.visible')
+            .and('not.be.empty');
+
+        // Categoria
+        cy.get('.product-information p')
+            .contains('Category')
+            .should('be.visible');
+
+        // Preço
+        cy.get('.product-information span span')
+            .first()
+            .should('be.visible')
+            .and('contain', 'Rs.');
+
+        // Availability
+        cy.get('.product-information p')
+            .contains('Availability')
+            .should('be.visible');
+
+        // Condition
+        cy.get('.product-information p')
+            .contains('Condition')
+            .should('be.visible');
+
+        // Brand
+        cy.get('.product-information p')
+            .contains('Brand')
+            .should('be.visible');
 
 
     });
 
     it('TC9: Buscar produtos e validar resultados', () => {
 
-    cy.visit('https://automationexercise.com/');
+        cy.visit('https://automationexercise.com/');
 
-    cy.get('body').should('be.visible');
+        cy.get('body').should('be.visible');
 
-    
-    cy.get('a[href="/products"]').click();
 
-    
-    cy.contains('All Products', { timeout: 10000 }).should('be.visible');
-    cy.url().should('include', '/products');
+        cy.get('a[href="/products"]').click();
 
-  
-    const searchTerm = "dress";
-    cy.get('#search_product').type(searchTerm);
-    cy.get('#submit_search').click();
 
-   
-    cy.contains('Searched Products', { timeout: 10000 }).should('be.visible');
+        cy.contains('All Products', { timeout: 10000 }).should('be.visible');
+        cy.url().should('include', '/products');
 
-    cy.get('.features_items .product-image-wrapper')
-        .should('be.visible')
-        .and('have.length.greaterThan', 0);  
+
+        const searchTerm = "dress";
+        cy.get('#search_product').type(searchTerm);
+        cy.get('#submit_search').click();
+
+
+        cy.contains('Searched Products', { timeout: 10000 }).should('be.visible');
+
+        cy.get('.features_items .product-image-wrapper')
+            .should('be.visible')
+            .and('have.length.greaterThan', 0);
     });
 
     it('TC10: Verificar inscrição no footer (Subscription)', () => {
 
-    cy.visit('https://automationexercise.com/');
+        cy.visit('https://automationexercise.com/');
 
-   
-    cy.get('body').should('be.visible');
 
-    
-    cy.scrollTo('bottom');
+        cy.get('body').should('be.visible');
 
-    
-    cy.contains('Subscription', { timeout: 10000 }).should('be.visible');
 
-    //Inserir email e clicar na seta
-    const email = `teste${Date.now()}@gmail.com`;   // evita conflito de e-mails
-    cy.get('#susbscribe_email').type(email);
-    cy.get('#subscribe').click();
+        cy.scrollTo('bottom');
 
-    //Verificar mensagem de sucesso
-    cy.contains('You have been successfully subscribed!')
-      .should('be.visible');
+
+        cy.contains('Subscription', { timeout: 10000 }).should('be.visible');
+
+        //Inserir email e clicar na seta
+        const email = `teste${Date.now()}@gmail.com`;   // evita conflito de e-mails
+        cy.get('#susbscribe_email').type(email);
+        cy.get('#subscribe').click();
+
+        //Verificar mensagem de sucesso
+        cy.contains('You have been successfully subscribed!')
+            .should('be.visible');
     });
+    it('TC15: Fazer Pedido: Cadastre-se antes de finalizar a compra', () => {
 
+        const firstName = faker.person.firstName();
+        const lastName = faker.person.lastName();
+        const email = faker.internet.email();
+        const password = faker.internet.password();
+        const company = faker.company.name();
+        const address = faker.location.streetAddress();
+        const zipCode = faker.location.zipCode();
+        const phone = faker.phone.number();
+
+        cy.visit('https://automationexercise.com/');
+        cy.get('body').should('be.visible');
+
+        // Clicando em Signup/Login
+        cy.get('a[href="/login"]').click();
+
+        // Criando conta
+        cy.get('[data-qa="signup-name"]').type(firstName + ' ' + lastName);
+        cy.get('[data-qa="signup-email"]').type(email);
+        cy.get('[data-qa="signup-button"]').click();
+
+        cy.get('#id_gender1').check();
+        cy.get('[data-qa=password]').type(password);
+        cy.get('[data-qa=days]').select('10');
+        cy.get('[data-qa=months]').select('May');
+        cy.get('[data-qa=years]').select('2000');
+        cy.get('#newsletter').check();
+
+        cy.get('[data-qa=first_name]').type(firstName);
+        cy.get('[data-qa=last_name]').type(lastName);
+        cy.get('[data-qa=company]').type(company);
+        cy.get('[data-qa=address]').type(address);
+        cy.get('[data-qa=country]').select('Canada');
+        cy.get('[data-qa=state]').type('Alberta');
+        cy.get('[data-qa=city]').type('Calgary');
+        cy.get('[data-qa=zipcode]').type(zipCode);
+        cy.get('[data-qa=mobile_number]').type(phone);
+
+        cy.get('[data-qa=create-account]').click();
+
+        // Verificação de criação de conta
+        cy.contains('Account Created!').should('be.visible');
+        cy.get('[data-qa="continue-button"]').click();
+
+        // Verificar login
+        cy.contains('Logged in as').should('be.visible');
+
+        // Adicionar produto ao carrinho
+        cy.get('a[href="/products"]').click();
+
+        // Aguardar carregamento da página de produtos
+        cy.contains('All Products').should('be.visible');
+
+        // Clicar no primeiro produto para abrir a página de detalhes
+        cy.get('.product-image-wrapper')
+            .first()
+            .find('a[href^="/product_details/"]')
+            .click();
+
+        // Aguardar carregamento da página de detalhes do produto
+        cy.url().should('include', '/product_details/');
+
+        // Adicionar ao carrinho da página de detalhes (mais confiável)
+        cy.get('button[type="button"]').contains('Add to cart').click();
+
+        // Aguardar o modal aparecer e clicar em "Continue Shopping"
+        cy.get('#cartModal .modal-content', { timeout: 10000 }).should('be.visible');
+        cy.get('#cartModal button').contains('Continue Shopping').click();
+
+        // Voltar para home
+        cy.get('a[href="/"]').first().click();
+
+        // Ir ao carrinho
+        cy.get('li a[href="/view_cart"]').click();
+
+        // Validar carrinho
+        cy.url().should('include', '/view_cart');
+        cy.contains('Shopping Cart').should('be.visible');
+
+        // Verificar se há produtos no carrinho
+        cy.get('#cart_info_table tbody tr').should('have.length.at.least', 1);
+
+        // Proceed to Checkout
+        cy.get('a.check_out').contains('Proceed To Checkout').click();
+
+        // Verificar telas
+        cy.contains('Address Details').should('be.visible');
+        cy.contains('Review Your Order').should('be.visible');
+
+        // Comentário
+        cy.get('textarea[name="message"]').type('Pedido gerado automaticamente pelo teste.');
+
+        cy.get('a.btn-default.check_out').click();
+
+        // Preencher cartão
+        cy.get('input[name="name_on_card"]').type(`${firstName} ${lastName}`);
+        cy.get('input[name="card_number"]').type('4111111111111111');
+        cy.get('input[name="cvc"]').type('123');
+        cy.get('input[name="expiry_month"]').type('12');
+        cy.get('input[name="expiry_year"]').type('2030');
+
+        // Confirmar pagamento
+        cy.get('#submit').click();
+
+        // Verificar sucesso
+        cy.contains('Order Placed!',)
+            .should('be.visible');
+
+        //Deletar conta
+        cy.get('a[href="/delete_account"]').click();
+
+        // Confirmar exclusão
+        cy.contains('Account Deleted!').should('be.visible');
+        cy.get('[data-qa="continue-button"]').click();
+    });
 
 });
